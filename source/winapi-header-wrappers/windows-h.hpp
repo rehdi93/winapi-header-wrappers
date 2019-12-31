@@ -6,10 +6,16 @@
 #undef WINVER
 #define WINVER _WIN32_WINNT
 
+#if defined( _MBCS ) and (defined( UNICODE ) or defined( _UNICODE ))
+#   error "Inconsistent encoding specs, both Unicode (UTF-16) and MBCS (UTF-8)."
+#endif
+
 #undef UNICODE
-#define UNICODE
 #undef _UNICODE
-#define _UNICODE            // Mainly for 3rd party code that uses it for platform detection.
+#ifndef _MBCS           // _MBCS can be used for new-in-Windows-10 UTF-8 GUI apps.
+#   define UNICODE
+#   define _UNICODE     // Mainly for 3rd party code that uses it for platform detection.
+#endif
 #undef NOMINMAX
 #define NOMINMAX
 #undef STRICT
