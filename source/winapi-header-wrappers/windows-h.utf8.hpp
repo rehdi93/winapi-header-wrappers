@@ -1,6 +1,4 @@
 #pragma once
-#include <assert.h>
-
 #undef UTF8_WINAPI
 #define UTF8_WINAPI
 #include "windows-h.hpp"

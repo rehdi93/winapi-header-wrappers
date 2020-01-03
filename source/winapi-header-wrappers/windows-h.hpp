@@ -3,6 +3,7 @@
 #   error "<windows.h> has already been included, possibly with undesired options."
 #endif
 
+#include <assert.h>
 #ifdef _MSC_VER
 #   include <iso646.h>                  // Standard `and` etc. also with MSVC.
 #endif
