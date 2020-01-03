@@ -47,4 +47,4 @@ inline auto winapi_h_assert_utf8_codepage()
 {
     assert(( "The process codepage isn't UTF-8 (old Windows?).", GetACP() == 65001 ));
     return true;
-};
+}
