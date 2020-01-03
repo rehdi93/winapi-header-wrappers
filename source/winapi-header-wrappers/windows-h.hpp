@@ -1,18 +1,34 @@
 #pragma once
+#ifdef MessageBox
+#   error "<windows.h> has already been included, possibly with undesired options."
+#endif
+
+#ifdef _MSC_VER
+#   include <iso646.h>                  // Standard `and` etc. also with MSVC.
+#endif
 
 #ifndef _WIN32_WINNT
-#   define _WIN32_WINNT     0x0600      // Windows Vista
+#   define _WIN32_WINNT     0x0600      // Windows Vista as earliest supported OS.
 #endif
 #undef WINVER
 #define WINVER _WIN32_WINNT
 
-#if defined( _MBCS ) and (defined( UNICODE ) or defined( _UNICODE ))
-#   error "Inconsistent encoding specs, both Unicode (UTF-16) and MBCS (UTF-8)."
+#define IS_NARROW_WINAPI() \
+    ("Define UTF8_WINAPI please.", sizeof(*GetCommandLine()) == 1)
+
+#define IS_WIDE_WINAPI() \
+    ("Define UNICODE please.", sizeof(*GetCommandLine()) > 1)
+
+// UTF8_WINAPI is a custom macro for this file. UNICODE, _UNICODE and _MBCS are MS macros.
+#if defined( UTF8_WINAPI) and defined( UNICODE )
+#   error "Inconsistent encoding options, both UNICODE (UTF-16) and UTF8_WINAPI (UTF-8)."
 #endif
 
 #undef UNICODE
 #undef _UNICODE
-#ifndef _MBCS           // _MBCS can be used for new-in-Windows-10 UTF-8 GUI apps.
+#ifdef UTF8_WINAPI
+#   define _MBCS        // Mainly for 3rd party code that uses it for platform detection.
+#else
 #   define UNICODE
 #   define _UNICODE     // Mainly for 3rd party code that uses it for platform detection.
 #endif
@@ -22,8 +38,6 @@
 #define STRICT
 #undef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+// After this an `#include <winsock2.h>` will actually include that header.
 
-#undef _WINSOCKAPI_
-#define _WINSOCKAPI_
 #include <windows.h>
-//#include <winsock2.h>
