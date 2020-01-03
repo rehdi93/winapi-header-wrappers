@@ -45,6 +45,13 @@
 inline auto winapi_h_assert_utf8_codepage()
     -> bool
 {
+    #ifdef __GNUC__
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wunused-value"
+    #endif
     assert(( "The process codepage isn't UTF-8 (old Windows?).", GetACP() == 65001 ));
+    #ifdef __GNUC__
+        #pragma GCC diagnostic pop
+    #endif
     return true;
 }
