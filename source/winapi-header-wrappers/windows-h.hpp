@@ -41,3 +41,10 @@
 // After this an `#include <winsock2.h>` will actually include that header.
 
 #include <windows.h>
+
+inline auto winapi_h_assert_utf8_codepage()
+    -> bool
+{
+    assert(( "The process codepage isn't UTF-8 (old Windows?).", GetACP() == 65001 ));
+    return true;
+};
